@@ -1,8 +1,10 @@
 package br.com.alura.leilao.dao;
 
+import br.com.alura.leilao.model.Lance;
 import br.com.alura.leilao.model.Leilao;
 import br.com.alura.leilao.model.Usuario;
 import br.com.alura.leilao.util.JPAUtil;
+import br.com.alura.leilao.util.builder.LanceBuilder;
 import br.com.alura.leilao.util.builder.LeilaoBuilder;
 import br.com.alura.leilao.util.builder.UsuarioBuilder;
 import org.junit.jupiter.api.AfterEach;
@@ -10,22 +12,25 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class LeilaoDaoTest {
+class LanceDaoTest {
 
-    private LeilaoDao dao;
+    private LanceDao dao;
+    private LeilaoDao leilaoDao;
+    private UsuarioDao usuarioDao;
     private EntityManager em;
 
     @BeforeEach
     void beforeEach() {
         this.em = JPAUtil.getEntityManager();
-        this.dao = new LeilaoDao(em);
+        this.dao = new LanceDao(em);
+        this.leilaoDao = new LeilaoDao(em);
+        this.usuarioDao = new UsuarioDao(em);
+
         em.getTransaction().begin();
     }
 
@@ -35,33 +40,36 @@ class LeilaoDaoTest {
     }
 
     @Test
-    void shouldRegisterAuction() {
-        Leilao leilao = createAuction();
-        leilao = dao.salvar(leilao);
-        Leilao salvo = dao.buscarPorId(leilao.getId());
+    void shouldFindHighestBidInAuction() {
+        Usuario usuario = createUser();
+        em.persist(usuario);
+        Leilao leilao = createAuction(usuario);
+        leilaoDao.salvar(leilao);
+        Lance lanceMenor = createBid("500", leilao);
+        dao.salvar(lanceMenor);
+        Lance lanceMaior = createBid("1000", leilao);
+        dao.salvar(lanceMaior);
+        Lance salvoMaior = dao.buscarMaiorLanceDoLeilao(leilao);
 
-        assertNotNull(salvo);
+        assertEquals("1000", salvoMaior.getValor());
     }
 
-    @Test
-    void shouldUpdateAuction() {
-        Leilao leilao = createAuction();
-        leilao = dao.salvar(leilao);
-        leilao.setNome("Celular");
-        leilao.setValorInicial(new BigDecimal("400"));
-        leilao = dao.salvar(leilao);
-        Leilao salvo = dao.buscarPorId(leilao.getId());
-
-        assertEquals("Celular", salvo.getNome());
-        assertEquals(new BigDecimal("400"), salvo.getValorInicial());
+    private Lance createBid(String bid, Leilao leilao) {
+        Lance lance = new LanceBuilder()
+                .comValor(new BigDecimal(bid))
+                .comData(LocalDate.now())
+                .comUsuario(createUser())
+                .comLeilao(leilao)
+                .build();
+        return lance;
     }
 
-    private Leilao createAuction() {
+    private Leilao createAuction(Usuario usuario) {
         Leilao leilao = new LeilaoBuilder()
                 .comNome("Mochila")
                 .comValorInicial("400")
                 .comData(LocalDate.now())
-                .comUsuario(createUser())
+                .comUsuario(usuario)
                 .build();
         return leilao;
     }

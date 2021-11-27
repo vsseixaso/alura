@@ -45,5 +45,4 @@ public class LeilaoDao {
 				.setParameter("usuario", usuario)
 				.getResultList();
 	}
-
 }

@@ -51,6 +51,16 @@ public class Lance {
 		this.valor = valor;
 	}
 
+	public Lance(BigDecimal valor, LocalDate data, Usuario usuario, Leilao leilao) {
+		if (valor.doubleValue() <= 0) {
+			throw new IllegalArgumentException();
+		}
+		this.valor = valor;
+		this.data = data;
+		this.usuario = usuario;
+		this.leilao = leilao;
+	}
+
 	public Long getId() {
 		return id;
 	}
