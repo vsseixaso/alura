@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "outDir": "app/js",
+    "noEmitOnError": true, // não gera o js se houver erro
+    "noImplicitAny": true, // não permite tipo implícito any
+    "removeComments": true, // remove comentários do código compilado
+    "module": "system",
+    "strictNullChecks": true, // não permite atribuir valor null ou undefined (exceto para o próprio tipo null e undefined)
+    "experimentalDecorators": true
+  },
+  "include": [
+    "app/ts/**/*"
+  ]
+}

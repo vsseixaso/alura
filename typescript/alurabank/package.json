@@ -1,0 +1,18 @@
+{
+  "name": "alurabank",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "compile": "tsc",
+    "watch": "tsc -w",
+    "server": "lite-server --baseDir=app",
+    "start": "concurrently \"yarn watch\" \"yarn server\""
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jquery": "^2.0.42",
+    "concurrently": "3.4.0",
+    "lite-server": "^2.3.0",
+    "typescript": "2.3.2"
+  }
+}
