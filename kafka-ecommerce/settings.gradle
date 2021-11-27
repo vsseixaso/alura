@@ -1,0 +1,6 @@
+rootProject.name = 'kafka-ecommerce'
+include 'service-email'
+include 'common-kafka'
+include 'service-log'
+include 'service-fraud-detector'
+include 'service-new-order'
