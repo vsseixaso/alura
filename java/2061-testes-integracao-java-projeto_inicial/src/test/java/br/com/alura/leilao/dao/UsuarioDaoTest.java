@@ -2,6 +2,7 @@ package br.com.alura.leilao.dao;
 
 import br.com.alura.leilao.model.Usuario;
 import br.com.alura.leilao.util.JPAUtil;
+import br.com.alura.leilao.util.builder.UsuarioBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -50,9 +51,12 @@ class UsuarioDaoTest {
     }
 
     private Usuario createUser() {
-        Usuario usuario = new Usuario("fulano", "fulano@gmail.com", "1234");
+        Usuario usuario = new UsuarioBuilder()
+                .comNome("fulano")
+                .comEmail("fulano@gmail.com")
+                .comSenha("1234")
+                .build();
         em.persist(usuario);
         return usuario;
     }
-
 }

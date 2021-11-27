@@ -3,6 +3,8 @@ package br.com.alura.leilao.dao;
 import br.com.alura.leilao.model.Leilao;
 import br.com.alura.leilao.model.Usuario;
 import br.com.alura.leilao.util.JPAUtil;
+import br.com.alura.leilao.util.builder.LeilaoBuilder;
+import br.com.alura.leilao.util.builder.UsuarioBuilder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -55,13 +57,21 @@ class LeilaoDaoTest {
     }
 
     private Leilao createAuction() {
-        Usuario usuario = createUser();
-        Leilao leilao = new Leilao("Mochila", new BigDecimal("70"), LocalDate.now(), usuario);
+        Leilao leilao = new LeilaoBuilder()
+                .comNome("Mochila")
+                .comValorInicial("400")
+                .comData(LocalDate.now())
+                .comUsuario(createUser())
+                .build();
         return leilao;
     }
 
     private Usuario createUser() {
-        Usuario usuario = new Usuario("fulano", "fulano@gmail.com", "1234");
+        Usuario usuario = new UsuarioBuilder()
+                .comNome("fulano")
+                .comEmail("fulano@gmail.com")
+                .comSenha("1234")
+                .build();
         em.persist(usuario);
         return usuario;
     }
