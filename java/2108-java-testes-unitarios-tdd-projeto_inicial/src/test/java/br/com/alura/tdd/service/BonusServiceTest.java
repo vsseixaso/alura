@@ -13,9 +13,15 @@ class BonusServiceTest {
     @Test
     void shouldBeZeroBonusForAnEmployeeWithSalaryGreaterThan10000() {
         BonusService service = new BonusService();
-        BigDecimal bonus = service.calcularBonus(new Funcionario("Vinícius", LocalDate.now(), new BigDecimal("25000")));
+        assertThrows(IllegalArgumentException.class,
+                () -> service.calcularBonus(new Funcionario("Vinícius", LocalDate.now(), new BigDecimal("25000"))));
 
-        assertEquals(new BigDecimal("0.00"), bonus);
+//        try {
+//            service.calcularBonus(new Funcionario("Vinícius", LocalDate.now(), new BigDecimal("25000")));
+//            fail("Did not throw the exception.");
+//        } catch (Exception e) {
+//            assertEquals("Employee with salary greater than BRL 10,000 cannot receive a bonus.", e.getMessage());
+//        }
     }
 
     @Test
