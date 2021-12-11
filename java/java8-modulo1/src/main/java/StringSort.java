@@ -12,36 +12,12 @@ public class StringSort {
         words.add("editora casa do codigo");
         words.add("caelum");
 
-        Comparator<String> comparator = new SizeComparator();
-        // Collections.sort(words, comparator);
-        words.sort(comparator);
+        words.sort((s1, s2) -> Integer.compare(s1.length(), s2.length()));
+
         System.out.println(words);
 
-//        for (String w : words) {
-//            System.out.println(w);
-//        }
+        words.forEach(s -> System.out.println(s));
 
-        Consumer<String> consumer = new PrintInLine();
-        words.forEach(consumer);
-    }
-}
-
-class PrintInLine implements Consumer<String> {
-
-    @Override
-    public void accept(String s) {
-        System.out.println(s);
-    }
-}
-
-class SizeComparator implements Comparator<String> {
-
-    @Override
-    public int compare(String s1, String s2) {
-        if (s1.length() < s2.length())
-            return -1;
-        if (s1.length() > s2.length())
-            return 1;
-        return 0;
+        new Thread(() -> System.out.println("Executando um Runnable")).start();
     }
 }
