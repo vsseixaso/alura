@@ -12,11 +12,14 @@ public class StringSort {
         words.add("editora casa do codigo");
         words.add("caelum");
 
-        words.sort((s1, s2) -> Integer.compare(s1.length(), s2.length()));
+//        words.sort((s1, s2) -> Integer.compare(s1.length(), s2.length()));
+
+        words.sort(Comparator.comparing(s -> s.length()));
+        words.sort(Comparator.comparing(String::length));
 
         System.out.println(words);
 
-        words.forEach(s -> System.out.println(s));
+        words.forEach(System.out::println);
 
         new Thread(() -> System.out.println("Executando um Runnable")).start();
     }
