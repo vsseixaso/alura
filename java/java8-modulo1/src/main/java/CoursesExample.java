@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 class Course {
     private String name;
@@ -30,11 +29,24 @@ public class CoursesExample {
 
         courses.sort(Comparator.comparing(Course::getStudents));
 
-        int sum = courses.stream()
-            .filter(c -> c.getStudents() >= 100)
-            .mapToInt(Course::getStudents)
-            .sum();
+        OptionalDouble average = courses.stream()
+                .filter(c -> c.getStudents() >= 100)
+                .mapToInt(Course::getStudents)
+                .average();
 
-        System.out.println(sum);
+        courses.stream()
+            .filter(c -> c.getStudents() >= 100)
+            .findAny()
+            .ifPresent(c -> System.out.println(c.getName()));
+
+//        Course course = optionalCourse.orElse(null);
+
+        courses.stream() // courses.parallelStream()
+                .filter(c -> c.getStudents() >= 100)
+                .collect(Collectors.toMap(
+                        c -> c.getName(),
+                        c -> c.getStudents()))
+                .forEach((name, students) -> System.out.println(name + " tem " + students + " alunos"));
+
     }
 }
